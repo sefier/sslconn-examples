@@ -5,6 +5,8 @@ import (
 	"flag"
 	"fmt"
 	"github.com/vadims/sslconn"
+	"golang.org/x/text/encoding/simplifiedchinese"
+	"golang.org/x/text/transform"
 	"log"
 	"net"
 )
@@ -101,17 +103,18 @@ func processConn(conn net.Conn, config *sslconn.Config) {
 <title>Welcome!</title>
 </head>
 <body>
-<center><h1>Welcome!</h1></center>
+<center><h1>你好</h1></center>
 </body>
 </html>`
+	resultString, _, _ := transform.String(simplifiedchinese.GB18030.NewEncoder(), body)
 
 	w.WriteString("HTTP/1.1 200 OK\r\n" +
 		"Content-Type: text/html\r\n" +
-		fmt.Sprintf("Content-Length: %d\r\n", len(body)) +
+		fmt.Sprintf("Content-Length: %d\r\n", len(resultString)) +
 		"Connection: close\r\n" +
 		"\r\n")
 
-	w.WriteString(body)
+	w.WriteString(resultString)
 	w.Flush()
 
 	err = sslc.Shutdown()
