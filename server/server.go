@@ -98,14 +98,7 @@ func processConn(conn net.Conn, config *sslconn.Config) {
 
 	w := bufio.NewWriter(sslc)
 
-	body := `<html>
-<head>
-<title>Welcome!</title>
-</head>
-<body>
-<center><h1>你好</h1></center>
-</body>
-</html>`
+	body := "<XML><CLIENTNAME>邹建国</CLIENTNAME><PID>310101195411124030</PID></XML>"
 	resultString, _, _ := transform.String(simplifiedchinese.GB18030.NewEncoder(), body)
 
 	w.WriteString("HTTP/1.1 200 OK\r\n" +
